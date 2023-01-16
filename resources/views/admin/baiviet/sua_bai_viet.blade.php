@@ -230,42 +230,40 @@
                                     </div>
                                     <!-- End Form Group -->
                                 </div>
-{{--                                @if($item->post_author != 1)--}}
-{{--                                <div class="col-6">--}}
-{{--                                    <!-- Form Group -->--}}
-{{--                                    <div class="form-group">--}}
-{{--                                        <label for="projectNameProjectSettingsLabel" class="input-label">Bài viết liên--}}
-{{--                                            quan<i--}}
-{{--                                                class="tio-help-outlined text-body ml-1" data-toggle="tooltip"--}}
-{{--                                                data-placement="top"--}}
-{{--                                                title=""--}}
-{{--                                                data-original-title="Displayed on public forums, such as Front."></i></label>--}}
+                                <div class="col-6">
+                                    <!-- Form Group -->
+                                    <div class="form-group">
+                                        <label for="projectNameProjectSettingsLabel" class="input-label">Bài viết liên
+                                            quan<i
+                                                class="tio-help-outlined text-body ml-1" data-toggle="tooltip"
+                                                data-placement="top"
+                                                title=""
+                                                data-original-title="Displayed on public forums, such as Front."></i></label>
 
-{{--                                        <div class="input-group input-group-merge">--}}
+                                        <div class="input-group input-group-merge">
 
-{{--                                            --}}{{--                                        <input type="text" class="form-control" name="search"--}}
-{{--                                            --}}{{--                                               id="search" placeholder="Bài viết liên quan"--}}
-{{--                                            --}}{{--                                               aria-label="Enter project name here" pattern=".{1,}"--}}
-{{--                                            --}}{{--                                               title="Không được để trống" required>--}}
+{{--                                                                                    <input type="text" class="form-control" name="search"--}}
+{{--                                                                                           id="search" placeholder="Bài viết liên quan"--}}
+{{--                                                                                           aria-label="Enter project name here" pattern=".{1,}"--}}
+{{--                                                                                           title="Không được để trống" required>--}}
 
-{{--                                            <select id="multi-select" name="ds_lq" multiple multiselect-search="true">--}}
-{{--                                                @foreach($ds_lienquan as $post_lq)--}}
-{{--                                                    <option value="{{$post_lq->ID}}"--}}
-{{--                                                            selected>{{$post_lq->post_title}}</option>--}}
-{{--                                                @endforeach--}}
-{{--                                                @foreach($ds_post as $post)--}}
-{{--                                                    <option value="{{$post->ID}}"--}}
-{{--                                                    >{{$post->post_title}}</option>--}}
-{{--                                                @endforeach--}}
-{{--                                            </select>--}}
-{{--                                        </div>--}}
+                                            <select id="multi-select" name="ds_lq" multiple multiselect-search="true">
+                                                @foreach($ds_lienquan as $post_lq)
+                                                    <option value="{{$post_lq->ID}}"
+                                                            selected>{{$post_lq->post_title}}</option>
+                                                @endforeach
+                                                @foreach($ds_post as $post)
+                                                    <option value="{{$post->ID}}"
+                                                    >{{$post->post_title}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
 
-{{--                                        --}}{{--                                    <div id="search_list"></div>--}}
-{{--                                    </div>--}}
-{{--                                    <!-- End Form Group -->--}}
+                                                                            <div id="search_list"></div>
+                                    </div>
+                                    <!-- End Form Group -->
 
-{{--                                </div>--}}
-{{--                                @endif--}}
+                                </div>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="nav-two-eg1" role="tabpanel"

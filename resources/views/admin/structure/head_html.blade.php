@@ -5,8 +5,7 @@
     <div class="col-lg-12">
         <!-- Card -->
         <div class="card card-lg mb-3 mb-lg-5">
-            <form action="{{route('updateHead')}}" method="post" enctype="multipart/form-data">
-            @csrf
+            <form action="{{route('updateHead')}}" method="get" enctype="multipart/form-data">
             <!-- Header -->
                 <div class="card-header">
                     <h4 class="card-header-title">Sửa thẻ head</h4>

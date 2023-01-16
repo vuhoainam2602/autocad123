@@ -31,7 +31,7 @@ Route::prefix('/admin')->group(function () {
     Route::get('xoa-bai-viet/{id}', 'Admin\BaiVietController@xoaBaiViet')->name('xoaBV');
     Route::get('/tim-kiem', 'Admin\BaiVietController@timBaiViet')->name('timkiemBV');
     Route::get('/login', 'Admin\UsersController@view_login')->name('view_login');
-    Route::post('/action-login', 'Admin\UsersController@action_login')->name('action_login');
+    Route::get('/ac-login', 'Admin\UsersController@action_login')->name('login');
     Route::get('/them-user', 'Admin\UsersController@page_user')->name('page_user');
     Route::post('/insert-user', 'Admin\UsersController@insert_user')->name('insert_user');
     Route::get('/index-user', 'Admin\UsersController@index_user')->name('index_user');
@@ -58,7 +58,7 @@ Route::prefix('/admin')->group(function () {
     Route::get('them-banner', 'Admin\BannerController@themBanner');
     Route::post('them-banner', 'Admin\BannerController@luuBanner')->name('luuBanner');
     Route::get('head','Admin\StructureController@displayHead')->name('displayHead');
-    Route::post("head" , 'Admin\StructureController@updateHead')->name('updateHead');
+    Route::get("ac-head" , 'Admin\StructureController@updateHead')->name('updateHead');
     Route::get('footer','Admin\StructureController@displayFooter')->name('displayFooter');
     Route::post("footer" , 'Admin\StructureController@updateFooter')->name('updateFooter');
     Route::get('them-af', 'Admin\AFController@add')->name('addAF');
@@ -71,7 +71,7 @@ Route::prefix('/')->group(function () {
     Route::middleware('beforeCacheMiddleware')->get('hd/{slug}/.html', 'PostController@post_huong_dan')->name('post_hd')->middleware('afterCacheMiddleware');
     Route::middleware('beforeCacheMiddleware')->get('{slug}/page/{number}', 'AuthorController@index')->name('author')->middleware('afterCacheMiddleware');
     Route::middleware('beforeCacheMiddleware')->get('/search', 'PostController@search')->name('postSearch')->middleware('afterCacheMiddleware');
-    Route::middleware('beforeCacheMiddleware')->get('/{slug}.html', 'PostController@postDetail')->name('postDetail')->middleware('afterCacheMiddleware');
+    Route::middleware('beforeCacheMiddleware')->get('/{slug}/', 'PostController@postDetail')->name('postDetail')->middleware('afterCacheMiddleware');
     Route::middleware('beforeCacheMiddleware')->get('/suabai/top', 'TopListController@suabai')->middleware('afterCacheMiddleware');
 
 //    Route::get('/{slug}.html/', function (){
@@ -102,6 +102,7 @@ Route::get('/rd/xml/a/genrate-sitemap', function() {
         ->select('wp_posts.post_date', 'wp_posts.post_name')
         ->join('wp_yoast_indexable', 'wp_yoast_indexable.object_id', '=', 'wp_posts.id')
         ->where('wp_posts.post_type', '=', 'post')
+        ->where('post_name','!=', '')
         ->orderBy('wp_posts.ID', 'desc')
         ->get()->toArray();
 
@@ -125,7 +126,7 @@ Route::get('/rd/xml/a/genrate-sitemap', function() {
         }
 
         // add product to items array
-        $sitemap->add('https://autocad123.vn/' . $p->post_name . '.html', $p->post_date, 1, 'daily');
+        $sitemap->add('https://autocad123.vn/' . $p->post_name . '/', $p->post_date, 1, 'daily');
         // count number of elements
         $counter++;
 
@@ -151,5 +152,7 @@ Route::get("create/robots" , 'RobotController@index')->name('index_Ro');
 Route::post("create/robots" , 'RobotController@update')->name('updateRo');
 
 
-
+Route::get('/product.php/', function (){
+    return abort(404);
+});
 

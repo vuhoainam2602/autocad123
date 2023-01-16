@@ -38,14 +38,10 @@ class PostController extends Controller
                     return TagController::index($post_name);
                 case "category":
                     return TagController::index($post_name);
-                case "hd":
-                    return PostController::post_huong_dan($post_name);
-                case "top_list":
-                    return TopListController::index();
                 default:
 //                    $post_name = $post_name . '.' . $slug;
 
-                    return $this->postDetail($post_name . '.' . $slug);
+                    return $this->postDetail($post_name);
 //                default:
 ////                    $post_name=$post_name.'.html';
 //                    return redirect()->route('postDetail',['slug'=>$post_name]);
@@ -66,17 +62,7 @@ class PostController extends Controller
 //        DB::table('wp_posts')->where('post_name', '=', $post_name)->increment('post_view');
 //        try {
 //            dd($request->getRequestUri());
-            if (preg_match('/.+\/$/', $request->getRequestUri())) {
-                if(preg_match('/.+\/\/$/', $request->getRequestUri())){
-                    return abort(404);
-                }else{
-                    return Redirect::to(rtrim($request->getRequestUri(), '/'), 301);
-                }
-            }
-            if (str_contains($post_name, '.html')) {
-                $post_name = substr($post_name, 0, strpos($post_name, '.html'));
-            }
-//            dd($post_name);
+
             $post_detail = DB::table('wp_posts')
                 ->select('wp_posts.post_author', 'wp_posts.ID', 'wp_posts.post_date', 'wp_posts.post_content', 'wp_posts.post_title',
                     'wp_yoast_indexable.twitter_image', 'wp_yoast_indexable.permalink', 'wp_yoast_indexable.title', 'wp_yoast_indexable.description', 'wp_yoast_indexable.breadcrumb_title'
@@ -86,73 +72,17 @@ class PostController extends Controller
                 ->orderBy('id','desc')
                 ->get()->toArray();
             $category = DB::table('wp_terms')->where('slug', '=', $post_name)->first();
-            if (!empty($category)) {
-                return redirect()->route('tag', ['slug' => $post_name]);
+//            if (!empty($category)) {
+//                return redirect()->route('tag', ['slug' => $post_name]);
+//            }
+            if (str_contains($request->getRequestUri(),'/public')){
+                return abort(404);
             }
-//            $str = date('y-m');
-//            $post_view = json_decode($post_detail[0]->post_view, true);
-//            if (empty($post_view) || !is_array($post_view)) {
-//                $post_view = array();
-//            }
-//            if (empty($post_view["" . $str])) {
-//                $arr = array($str => "1");
-//                $post_view = array_merge($post_view, $arr);
-//            }
-//            $current_view = (int)$post_view["" . $str];
-//            $post_view["" . $str] = "" . ($current_view + 1);
-//            $post_detail[0]->postHD_view = $post_view;
-////        dd($post_view);
-//            DB::table('wp_posts')
-//                ->where('post_name', '=', $post_name)
-//                ->where("post_type", "=", "post")
-//                ->update(["wp_posts.post_view" => json_encode($post_view)]);
 
-
-//        $post_detail_hd = cache()->remember('PostController-wp_posts_a' . $post_name, 120, function () use ($post_name) {
-//            return DB::table('wp_posts_hd')
-//                ->where('postHD_name', '=', $post_name)
-//                ->get()->toArray();
-//        });
-//
-
-
-//        if ($post_detail[0]->id_key != 0) {
-//            return TopListController::post_detail($post_name);
-//        }
-//        if (count($post_detail) <= 0) {
-//            if (count($post_detail_hd) <= 0) {
-//                return abort(404);
-//            } else {
-//                return PostController::post_huong_dan($post_name);
-//            }
-//        }
-            if ($post_detail[0]->id_key != 0) {
-                return TopListController::post_detail($post_name);
-            }
 
 
             $post_detail[0]->post_content = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $post_detail[0]->post_content);
 
-//            $id_tham_khao = DB::table('wp_posts')
-//                ->select('wp_baivietlq.ID_BV_LQ')
-//                ->join('wp_baivietlq', 'wp_baivietlq.ID_BV_Chinh', '=', 'wp_posts.id')
-//                ->where('post_name', '=', $post_name)
-//                ->get()->toArray();
-//
-//            $list_bv_tham_khao = array();
-//
-//            foreach ($id_tham_khao as $value) {
-//                $post_detail0 =
-//                    DB::table('wp_posts')
-//                        ->select('wp_yoast_indexable.id', 'wp_yoast_indexable.object_id', 'wp_posts.post_title', 'wp_posts.post_name', 'wp_yoast_indexable.twitter_image', 'wp_yoast_indexable.description')
-//                        ->join('wp_yoast_indexable', 'wp_yoast_indexable.object_id', '=', 'wp_posts.id')
-//                        ->where('wp_posts.id', '=', $value->ID_BV_LQ)
-//                        ->where('post_type', '=', 'post')
-//                        ->where('object_type', '=', 'post')
-//                        ->whereNotNull('wp_yoast_indexable.twitter_image')
-//                        ->get()->toArray();
-//                $list_bv_tham_khao = array_merge($list_bv_tham_khao, $post_detail0);
-//            }
 
             $wp_term_relationships = cache()->remember('PostController-post_detail_id_' . $post_detail[0]->ID . $post_name, 120, function () use ($post_detail) {
                 return DB::table('wp_term_relationships')
@@ -178,6 +108,26 @@ class PostController extends Controller
                 $wp_terms = null;
             }
 
+        $id_tham_khao = DB::table('wp_posts')
+            ->select('hwp_baivietlq.ID_BV_LQ')
+            ->join('hwp_baivietlq', 'hwp_baivietlq.ID_BV_Chinh', '=', 'wp_posts.id')
+            ->where('post_name', '=', $post_name)
+            ->get()->toArray();
+
+        $list_bv_tham_khao = array();
+
+        foreach ($id_tham_khao as $value) {
+            $post_detail0 =
+                DB::table('wp_posts')
+                    ->select('wp_yoast_indexable.id', 'wp_yoast_indexable.object_id', 'wp_posts.post_title', 'wp_posts.post_name', 'wp_yoast_indexable.twitter_image', 'wp_yoast_indexable.description')
+                    ->join('wp_yoast_indexable', 'wp_yoast_indexable.object_id', '=', 'wp_posts.id')
+                    ->where('wp_posts.id', '=', $value->ID_BV_LQ)
+                    ->where('post_type', '=', 'post')
+                    ->where('object_type', '=', 'post')
+                    ->whereNotNull('wp_yoast_indexable.twitter_image')
+                    ->get()->toArray();
+            $list_bv_tham_khao = array_merge($list_bv_tham_khao, $post_detail0);
+        }
 
             // Chủ đề nổi bật
             $select_list_chu_de_noi_bat = cache()->remember('PostController-wp_hw_trending' . $post_name, 120, function () {
@@ -202,7 +152,7 @@ class PostController extends Controller
             }
 
 
-            return view('postPage.post', compact('post_detail', 'wp_terms', 'list_chu_de_noi_bat'));
+            return view('postPage.post', compact('post_detail', 'wp_terms', 'list_chu_de_noi_bat','list_bv_tham_khao'));
 
 //        } catch (\Exception $e) {
 //            return abort(404);
@@ -240,8 +190,8 @@ class PostController extends Controller
                 ->update(["postHD_view" => json_encode($post_view_hd)]);
 
             $id_tham_khao = DB::table('wp_posts_hd')
-                ->select('wp_baivietlq.ID_BV_LQ')
-                ->join('wp_baivietlq', 'wp_baivietlq.ID_BV_Chinh', '=', 'wp_posts_hd.ID_HD')
+                ->select('hwp_baivietlq.ID_BV_LQ')
+                ->join('hwp_baivietlq', 'hwp_baivietlq.ID_BV_Chinh', '=', 'wp_posts_hd.ID_HD')
                 ->where('postHD_name', '=', $post_name)
                 ->get()->toArray();
             $list_bv_tham_khao = array();
@@ -329,11 +279,10 @@ class PostController extends Controller
                 ->join('wp_yoast_indexable', 'wp_posts.ID', '=', 'wp_yoast_indexable.object_id')
                 ->where('wp_yoast_indexable.twitter_image', '!=', null)
             ->where('post_name', '!=', "")
-                ->where('term_taxonomy_id', '=', '1')
+                ->where('term_taxonomy_id', '=', '17')
                 ->limit(5)
                 ->orderBy('wp_term_relationships.object_id', 'desc')
                 ->get()->toArray();
-
 
         //Category: Tài liệu thi công
         $term_relationship_45 = cache()->remember('HomeController-term_relationship_45', 120, function () {

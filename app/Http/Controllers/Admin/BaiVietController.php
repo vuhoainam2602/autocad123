@@ -34,8 +34,6 @@ class BaiVietController
                 ->where('object_type','=','post')
                 ->where('wp_posts.post_type', '=', 'post')
                 ->where('wp_posts.post_status', '=', 'publish')
-                ->where('wp_posts.comment_status','=','open')
-
                 ->orderBy('wp_posts.ID', 'desc')
                 ->get()->toArray();
             $users = DB::table('wp_users')->select("ID", "user_login")->get()->toArray();
@@ -43,8 +41,6 @@ class BaiVietController
                 ->select("wp_term_taxonomy.term_taxonomy_id","wp_terms.name")
                 ->join('wp_terms', 'wp_terms.term_id', '=', 'wp_term_taxonomy.term_taxonomy_id')
                 ->where('taxonomy', '=', 'category')
-                ->where('term_taxonomy_id', '<=', '98')
-                ->where('term_taxonomy_id', '>=', '5')
                 ->get()
                 ->toArray();
             return view('admin.baiviet.them_bai_viet', compact("users", 'categories', 'posts'));
@@ -113,31 +109,29 @@ class BaiVietController
                 'term_taxonomy_id' => $request->the_loai,
                 'term_order' => '0'
             ]);
-//            if (!empty($request->input('selected'))) {
-//
-//
-//                foreach ($request->input('selected') as $value) {
-//                    $ID_will_insert = DB::table('wp_posts')
-//                        ->where('post_status','=','publish')
-//                        ->where('post_type','=','post')
-//                        ->where('post_title', '=', $value)->get()->toArray();
-//
-//                    try {
-//                        DB::table("hwp_baivietlq")->insert([
-//                            'ID_BV_Chinh' => $post[0]->ID,
-//                            'ID_BV_LQ' => $ID_will_insert[0]->ID
-//                        ]);
-//                    }
-//                    catch (\Exception $i){
-//                        DB::table("hwp_baivietlq")->insert([
-//                            'ID_BV_Chinh' => $post[0]->ID,
-//                            'ID_BV_LQ' => $ID_will_insert[1]->ID
-//                        ]);
-//                    }
-//
-//                }
-//
-//            }
+
+            if (!empty($request->input('selected'))) {
+
+
+                foreach ($request->input('selected') as $value) {
+                    $ID_will_insert = DB::table('wp_posts')
+                        ->where('post_status','=','publish')
+                        ->where('post_type','=','post')
+                        ->where('post_title', '=', $value)->first();
+
+                    try {
+                        DB::table("hwp_baivietlq")->insert([
+                            'ID_BV_Chinh' => $post[0]->ID,
+                            'ID_BV_LQ' => $ID_will_insert->ID
+                        ]);
+                    }
+                    catch (\Exception $i){
+
+                    }
+
+                }
+
+            }
 
 
             return redirect()->route('trang_chu');
@@ -148,7 +142,7 @@ class BaiVietController
 
     public function suaBaiViet(Request $request)
     {
-        try {
+//        try {
             $posts = DB::table('wp_posts')
                 ->select('wp_posts.ID', 'wp_posts.post_title', 'wp_posts.post_name',
                     'wp_posts.post_author', 'wp_posts.post_date', 'wp_yoast_indexable.description',
@@ -168,44 +162,40 @@ class BaiVietController
 //                ->where('term_taxonomy_id', '>=', '5')
                 ->get()
                 ->toArray();
-//            $ds_lienquan = DB::table('wp_baivietlq')
-//                ->select("wp_baivietlq.ID_BV_Chinh", 'wp_baivietlq.ID_BV_LQ', "wp_posts.post_title", "wp_posts.ID")
-//                ->join('wp_posts', 'wp_baivietlq.ID_BV_LQ', 'wp_posts.ID')
-//                ->where('post_type', '=', 'post')
-//                ->where('post_status', '=', 'publish')
-//                ->where('wp_posts.comment_status','=','open')
-//                ->where('ID_BV_Chinh', '=', $request->id)
-//                ->get()->toArray();
-//            $list_id_ds_lienquan = array();
-//            foreach ($ds_lienquan as $item_a) {
-//                array_push($list_id_ds_lienquan, $item_a->ID);
-//            }
-//            dd($ds_lienquan);
-//            $ds_post = DB::table('wp_posts')
-//                ->select('wp_posts.ID', 'wp_posts.post_date', 'wp_posts.post_content', 'wp_posts.post_title', 'wp_posts.post_name')
-//                ->join('wp_yoast_indexable', 'wp_yoast_indexable.object_id', '=', 'wp_posts.id')
-//                ->join('wp_users', 'wp_posts.post_author', '=', 'wp_users.id')
-//                ->where('object_type','=','post')
-//                ->where('wp_posts.post_type', '=', 'post')
-//                ->where('wp_posts.post_status', '=', 'publish')
-//                ->where('wp_posts.comment_status','=','open')
-//                ->where("wp_posts.ID",'!=',$request->id)
-//                ->whereNotIn("wp_posts.ID", $list_id_ds_lienquan)
-////            ->where('wp_yoast_indexable.object_type', '=', 'post')
-//                ->orderBy('wp_posts.ID', 'desc')
-//                ->get()->toArray();
+            $ds_lienquan = DB::table('hwp_baivietlq')
+                ->select("hwp_baivietlq.ID_BV_Chinh", 'hwp_baivietlq.ID_BV_LQ', "wp_posts.post_title", "wp_posts.ID")
+                ->join('wp_posts', 'hwp_baivietlq.ID_BV_LQ', 'wp_posts.ID')
+                ->where('post_type', '=', 'post')
+                ->where('post_status', '=', 'publish')
+                ->where('ID_BV_Chinh', '=', $request->id)
+                ->get()->toArray();
+            $list_id_ds_lienquan = array();
+            foreach ($ds_lienquan as $item_a) {
+                array_push($list_id_ds_lienquan, $item_a->ID);
+            }
+            $ds_post = DB::table('wp_posts')
+                ->select('wp_posts.ID', 'wp_posts.post_date', 'wp_posts.post_content', 'wp_posts.post_title', 'wp_posts.post_name')
+                ->join('wp_yoast_indexable', 'wp_yoast_indexable.object_id', '=', 'wp_posts.id')
+                ->join('wp_users', 'wp_posts.post_author', '=', 'wp_users.id')
+                ->where('object_type','=','post')
+                ->where('wp_posts.post_type', '=', 'post')
+                ->where('wp_posts.post_status', '=', 'publish')
+                ->where("wp_posts.ID",'!=',$request->id)
+                ->whereNotIn("wp_posts.ID", $list_id_ds_lienquan)
+//            ->where('wp_yoast_indexable.object_type', '=', 'post')
+                ->orderBy('wp_posts.ID', 'desc')
+                ->get()->toArray();
 
-            return view('admin.baiviet.sua_bai_viet', compact('item', 'users', 'categories'));
-        } catch (\Exception $e) {
-            return abort(404);
-        }
+            return view('admin.baiviet.sua_bai_viet', compact('item', 'users', 'categories','ds_lienquan','ds_post'));
+//        } catch (\Exception $e) {
+//            return abort(404);
+//        }
     }
 
     public function updateBaiViet(Request $request)
     {
        try {
         $ses = $request->session()->get('tk_user');
-
 
             if (isset($ses) && ($request->session()->get('role')[0] == 'admin' || $request->session()->get('role')[0] == 'nv')) {
                 $markupFixer  = new \TOC\MarkupFixer();
@@ -229,46 +219,46 @@ class BaiVietController
                         'pinged' => "",
                         'post_content_filtered' => ""
                     ]);
-                if ($request->image_upload != null) {
-                    $file_image = $request->file('image_upload');
-                    $ext = $request->file('image_upload')->extension();
-                    $name_image = now()->toDateString() . '-' . time() . '-' . 'edit_post_img.' . $ext;
-                    $img = (new \Intervention\Image\ImageManager)->make($file_image->path())->fit(300)->encode('jpg');
-                    $path = public_path('images/').$name_image;
-
-                    $img->save($path);
-
-                    DB::table("wp_yoast_indexable")->where('object_id', '=', $request->id)
-                        ->update([
-                            'object_type' => 'post',
-                            'object_sub_type' => 'post',
-                            'author_id' => $request->tac_gia,
-                            'description' => $request->mo_ta,
-                            'breadcrumb_title' => $request->tieu_de,
-                            'post_status' => 'publish',
-                            'created_at' => $request->date,
-                            'updated_at' => date('y-m-d h:i:s'),
-                            'primary_focus_keyword' => $request->meta_key,
-                            'meta_robot'=>$request->meta_robot,
-                            'twitter_image' => URL::to('') . '/images/' . $name_image,
-                            'permalink' => 'https://autocad123.vn/images/' . $name_image,
-                        ]);
-                }
-                else{
-                    DB::table("wp_yoast_indexable")->where('object_id', '=', $request->id)
-                        ->update([
-                            'object_type' => 'post',
-                            'object_sub_type' => 'post',
-                            'author_id' => $request->tac_gia,
-                            'description' => $request->mo_ta,
-                            'breadcrumb_title' => $request->tieu_de,
-                            'post_status' => 'publish',
-                            'created_at' => $request->date,
-                            'updated_at' => date('y-m-d h:i:s'),
-                            'primary_focus_keyword' => $request->meta_key,
-                            'meta_robot'=>$request->meta_robot,
-                        ]);
-                }
+//                if ($request->image_upload != null) {
+//                    $file_image = $request->file('image_upload');
+//                    $ext = $request->file('image_upload')->extension();
+//                    $name_image = now()->toDateString() . '-' . time() . '-' . 'edit_post_img.' . $ext;
+//                    $img = (new \Intervention\Image\ImageManager)->make($file_image->path())->fit(300)->encode('jpg');
+//                    $path = public_path('images/').$name_image;
+//
+//                    $img->save($path);
+//
+//                    DB::table("wp_yoast_indexable")->where('object_id', '=', $request->id)
+//                        ->update([
+//                            'object_type' => 'post',
+//                            'object_sub_type' => 'post',
+//                            'author_id' => $request->tac_gia,
+//                            'description' => $request->mo_ta,
+//                            'breadcrumb_title' => $request->tieu_de,
+//                            'post_status' => 'publish',
+//                            'created_at' => $request->date,
+//                            'updated_at' => date('y-m-d h:i:s'),
+//                            'primary_focus_keyword' => $request->meta_key,
+//                            'meta_robot'=>$request->meta_robot,
+//                            'twitter_image' => URL::to('') . '/images/' . $name_image,
+//                            'permalink' => 'https://autocad123.vn/images/' . $name_image,
+//                        ]);
+//                }
+//                else{
+//                    DB::table("wp_yoast_indexable")->where('object_id', '=', $request->id)
+//                        ->update([
+//                            'object_type' => 'post',
+//                            'object_sub_type' => 'post',
+//                            'author_id' => $request->tac_gia,
+//                            'description' => $request->mo_ta,
+//                            'breadcrumb_title' => $request->tieu_de,
+//                            'post_status' => 'publish',
+//                            'created_at' => $request->date,
+//                            'updated_at' => date('y-m-d h:i:s'),
+//                            'primary_focus_keyword' => $request->meta_key,
+//                            'meta_robot'=>$request->meta_robot,
+//                        ]);
+//                }
 
 
 
@@ -278,39 +268,38 @@ class BaiVietController
                         'term_order' => '0'
                     ]);
 
-//                if (!empty($request->input('selected'))) {
-//                    DB::table("wp_baivietlq")->where('ID_BV_Chinh', '=', $request->id)->delete();
-//
-//                    foreach ($request->input('selected') as $value) {
-//                        $ID_will_insert = DB::table('wp_posts')
-//                            ->where('post_status','=','publish')
-//                            ->where('post_type','=','post')
-//                            ->where('post_title', '=', $value)->get()->toArray();
-//                        try {
-//                            DB::table("wp_baivietlq")->insert([
-//                                'ID_BV_Chinh' => $request->id,
-//                                'ID_BV_LQ' => $ID_will_insert[0]->ID
-//                            ]);
-//                        }
-//                        catch (\Exception $i){
-//                            DB::table("wp_baivietlq")->insert([
-//                                'ID_BV_Chinh' => $request->id,
-//                                'ID_BV_LQ' => $ID_will_insert[1]->ID
-//                            ]);
-//                        }
-//
-//                    }
-//                } else {
-//                    DB::table("wp_baivietlq")->where('ID_BV_Chinh', '=', $request->id)->delete();
-//                }
+                if (!empty($request->input('selected'))) {
+                    DB::table("hwp_baivietlq")->where('ID_BV_Chinh', '=', $request->id)->delete();
+
+                    foreach ($request->input('selected') as $value) {
+                        $ID_will_insert = DB::table('wp_posts')
+                            ->where('post_status','=','publish')
+                            ->where('post_type','=','post')
+                            ->where('post_title', '=', $value)->get()->toArray();
+                        try {
+                            DB::table("hwp_baivietlq")->insert([
+                                'ID_BV_Chinh' => $request->id,
+                                'ID_BV_LQ' => $ID_will_insert[0]->ID
+                            ]);
+                        }
+                        catch (\Exception $i){
+                            DB::table("hwp_baivietlq")->insert([
+                                'ID_BV_Chinh' => $request->id,
+                                'ID_BV_LQ' => $ID_will_insert[1]->ID
+                            ]);
+                        }
+
+                    }
+                } else {
+                    DB::table("hwp_baivietlq")->where('ID_BV_Chinh', '=', $request->id)->delete();
+                }
                 if (session("tasks_url")){
                     return redirect(session("tasks_url"));
                 }
                 return redirect()->route('trang_chu');
             } else {
                 return redirect('/admin/login');
-
-        }
+            }
         } catch (\Exception $e) {
            return redirect(session("tasks_url"));
         }
@@ -376,13 +365,13 @@ class BaiVietController
 
             DB::table("wp_yoast_indexable")->where('object_id', '=', $id)->delete();
 
-            $list_key = DB::table('wp_tong_hop')->get()->toArray();
-            foreach ($list_key as $key){
-                $post =  DB::table('wp_posts')->where('id_key', '=', $key->id)->get()->toArray();
-                if (count($post)==0){
-                    DB::table('wp_tong_hop')->where('id',$key->id)->delete();
-                }
-            }
+//            $list_key = DB::table('wp_tong_hop')->get()->toArray();
+//            foreach ($list_key as $key){
+//                $post =  DB::table('wp_posts')->where('id_key', '=', $key->id)->get()->toArray();
+//                if (count($post)==0){
+//                    DB::table('wp_tong_hop')->where('id',$key->id)->delete();
+//                }
+//            }
             DB::table("wp_term_relationships")->where('object_id', '=', $id)->delete();
 
 //            DB::table("wp_baivietlq")->where('ID_BV_Chinh', '=', $id)->delete();

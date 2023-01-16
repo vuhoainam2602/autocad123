@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-{{--    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8"/>--}}
-{{--    <meta name="Language" content="Vietnamese">--}}
-{{--    <meta name="Designer" content="RDSIC">--}}
-{{--    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>--}}
-{{--    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>--}}
-{{--    <meta http-equiv="content-style-type" content="text/css">--}}
-{{--    <meta http-equiv="content-language" content="vi">--}}
-{{--    <meta name="copyright" content="https://thoitrangwiki.com">--}}
-{{--    <meta name="”robots”" content="”index,follow”">--}}
-{{--    <meta property="og:type" content="article">--}}
-{{--    <meta name="copyright" content="Copyright © Wikipedia">--}}
-{{--    <meta property="og:type" content="threed.asset">--}}
-{{--    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://thoitrangwiki.com/sitemap.xml">--}}
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8"/>
+    <meta name="Language" content="Vietnamese">
+    <meta name="Designer" content="RDSIC">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="content-style-type" content="text/css">
+    <meta http-equiv="content-language" content="vi">
+    <meta name="copyright" content="https://autocad123.vn/">
+    <meta name="”robots”" content="”index,follow”">
+    <meta property="og:type" content="article">
+    <meta name="copyright" content="Copyright © Wikipedia">
+    <meta property="og:type" content="threed.asset">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://autocad123.vn/sitemap.xml">
 {{--    <link href="{{asset("css/css_client/global.css")}}" rel="stylesheet">--}}
 {{--    <link rel="preconnect" href="https://fonts.googleapis.com">--}}
 {{--    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>--}}
@@ -181,6 +181,10 @@
 {{--             src="https://www.facebook.com/tr?id=1152898655226527&ev=PageView&noscript=1"/></noscript>--}}
 
     <style>
+
+        ul,li{
+            padding: 20px;
+        }
         .material-symbols-outlined{
             display: none;
         }

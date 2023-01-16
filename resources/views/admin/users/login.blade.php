@@ -62,8 +62,7 @@
                 <div class="card card-lg mb-5">
                     <div class="card-body">
                         <!-- Form -->
-                        <form class="js-validate" action="{{Request::root().'/admin/action-login'}}" method="post" novalidate="novalidate">
-                            @csrf
+                        <form class="js-validate" action="{{url('/admin/ac-login')}}" method="get" novalidate="novalidate">
                             <div class="text-center">
                                 <div class="mb-5">
                                     <h1 class="display-4">Đăng nhập</h1>

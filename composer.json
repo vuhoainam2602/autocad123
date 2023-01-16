@@ -8,6 +8,7 @@
         "php": "^7.3|^8.0",
         "caseyamcl/toc": "^3.0",
         "fruitcake/laravel-cors": "^2.0",
+        "fsasvari/laravel-trailing-slash": "^3.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "intervention/image": "^2.7",
         "laravel/framework": "^8.75",
@@ -60,7 +61,6 @@
         }
     },
     "config": {
-        "optimize-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true
     },
