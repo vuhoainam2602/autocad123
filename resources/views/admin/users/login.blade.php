@@ -77,7 +77,7 @@
                                 <label class="input-label" for="signinSrEmail">Tên tài khoản</label>
 
                                 <input type="email" class="form-control form-control-lg" name="username" id="signinSrEmail"
-                                       tabindex="1" placeholder="email@address.com" aria-label="email@address.com"
+                                       tabindex="1" placeholder="username" aria-label="email@address.com"
                                        required="" data-msg="Please enter a valid email address.">
                             </div>
                             <!-- End Form Group -->

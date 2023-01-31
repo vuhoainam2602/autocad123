@@ -4,13 +4,13 @@
     <meta name="keywords" content="{{$post_detail[0]->primary_focus_keyword}}">
     <meta name="robots" content="{{$post_detail[0]->meta_robot}}"/>
     <meta name="description" content="{{$post_detail[0]->description}}">
-    <meta property="og:site_name" content="{{Request::url()}}">
-    <meta property="og:url" content="{{Request::url()}}">
+    <meta property="og:site_name" content="{{Request::url()}}/">
+    <meta property="og:url" content="{{Request::url()}}/">
     <meta property="og:title" content="{{$post_detail[0]->post_title}}">
     <meta property="og:description" content="{{$post_detail[0]->description}}">
     <meta property="og:image" content="{{$post_detail[0]->twitter_image}}">
-    <meta property="og:asset" content="{{Request::url()}}">
-    <link rel="canonical" href="{{Request::url()}}">
+    <meta property="og:asset" content="{{Request::url()}}/">
+    <link rel="canonical" href="{{Request::url()}}/">
 @endsection
 {{--@section('banner')--}}
 {{--    @if(!empty($banner_ngang))--}}

@@ -66,119 +66,6 @@
 @include('layouts.lib_bs5')
 @include('layouts.lib_jquery')
 
-<!-- Global site tag (gtag.js) - Google Analytics -->
-
-    <script>
-
-        function loadGGtag(_time) {
-            setTimeout(function () {
-                (function () {
-                    var s1 = document.createElement("script"),
-                        s0 = document.getElementsByTagName("script")[0];
-                    s1.async = true;
-                    s1.src = "https://www.googletagmanager.com/gtag/js?id=UA-32341979-16";
-                    s0.parentNode.insertBefore(s1, s0);
-
-                    // gtag('event', 'page_view', {
-                    //     'send_to': 'AW-753090115',
-                    //     'value': 'replace with value',
-                    //     'items': [{
-                    //         'id': 'replace with value',
-                    //         'location_id': 'replace with value',
-                    //         'google_business_vertical': 'custom'
-                    //     }]
-                    // });
-
-
-                })();
-            }, _time);
-        }
-
-        loadGGtag(5000);
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-
-        gtag('js', new Date());
-        gtag('config', 'UA-32341979-16');
-
-    </script>
-
-
-{{--    <!-- Facebook Pixel Code -->--}}
-{{--    <script>--}}
-{{--        function loadFacebookPixel(_time) {--}}
-{{--            setTimeout(function () {--}}
-{{--                (function () {--}}
-{{--                    !function (f, b, e, v, n, t, s) {--}}
-{{--                        if (f.fbq) return;--}}
-{{--                        n = f.fbq = function () {--}}
-{{--                            n.callMethod ?--}}
-{{--                                n.callMethod.apply(n, arguments) : n.queue.push(arguments)--}}
-{{--                        };--}}
-{{--                        if (!f._fbq) f._fbq = n;--}}
-{{--                        n.push = n;--}}
-{{--                        n.loaded = !0;--}}
-{{--                        n.version = '2.0';--}}
-{{--                        n.queue = [];--}}
-{{--                        t = b.createElement(e);--}}
-{{--                        t.async = !0;--}}
-{{--                        t.src = v;--}}
-{{--                        s = b.getElementsByTagName(e)[0];--}}
-{{--                        s.parentNode.insertBefore(t, s)--}}
-{{--                    }(window, document, 'script',--}}
-{{--                        'https://connect.facebook.net/en_US/fbevents.js');--}}
-{{--                    fbq('init', '277357285800457');--}}
-{{--                    fbq('track', 'PageView');--}}
-{{--                })();--}}
-{{--            }, _time);--}}
-{{--        }--}}
-
-{{--        loadFacebookPixel(5000);--}}
-
-{{--    </script>--}}
-{{--    <noscript><img height="1" width="1" style="display:none"--}}
-{{--                   src="https://www.facebook.com/tr?id=277357285800457&ev=PageView&noscript=1"--}}
-{{--        /></noscript>--}}
-{{--    <!-- End Facebook Pixel Code -->--}}
-{{--    <!-- Facebook Pixel Code -->--}}
-
-{{--    <script>--}}
-{{--        function loadFacebookPixelCtyXDS(_time) {--}}
-{{--            setTimeout(function () {--}}
-{{--                (function () {--}}
-{{--                    !function (f, b, e, v, n, t, s) {--}}
-{{--                        if (f.fbq) return;--}}
-{{--                        n = f.fbq = function () {--}}
-{{--                            n.callMethod ?--}}
-{{--                                n.callMethod.apply(n, arguments) : n.queue.push(arguments)--}}
-{{--                        };--}}
-{{--                        if (!f._fbq) f._fbq = n;--}}
-{{--                        n.push = n;--}}
-{{--                        n.loaded = !0;--}}
-{{--                        n.version = '2.0';--}}
-{{--                        n.queue = [];--}}
-{{--                        t = b.createElement(e);--}}
-{{--                        t.async = !0;--}}
-{{--                        t.src = v;--}}
-{{--                        s = b.getElementsByTagName(e)[0];--}}
-{{--                        s.parentNode.insertBefore(t, s)--}}
-{{--                    }(window, document, 'script',--}}
-{{--                        'https://connect.facebook.net/en_US/fbevents.js');--}}
-{{--                    fbq('init', '1152898655226527');--}}
-{{--                    fbq('track', 'PageView');--}}
-{{--                })();--}}
-{{--            }, _time);--}}
-
-{{--        }--}}
-
-{{--        loadFacebookPixelCtyXDS(5000);--}}
-{{--    </script>--}}
-{{--    <noscript>--}}
-{{--        <img height="1" width="1" style="display:none"--}}
-{{--             src="https://www.facebook.com/tr?id=1152898655226527&ev=PageView&noscript=1"/></noscript>--}}
 
     <style>
 
@@ -189,22 +76,10 @@
             display: none;
         }
 
-        .ifream {
-            position: relative;
-            overflow: hidden;
-            width: 100%;
-            padding-top: 56.25%; /* 16:9 Aspect Ratio (divide 9 by 16 = 0.5625) */
-        }
 
-        /* Then style the iframe to fit in the container div with full height and width */
-        .responsive-iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            width: 100%;
-            height: 100%;
+        iframe {
+            aspect-ratio: 16 / 9;
+            width: 100% !important;
         }
         .entry-content h2,
         .entry-content h3 {
@@ -374,7 +249,7 @@
 </head>
 <body class="">
 @yield('link-anh')
-<nav class="navbar block-nav  navbar-expand-lg navbar-light bg-light" style="position: sticky;top: 0;z-index: 1000;">
+<nav class="navbar block-nav  navbar-expand-lg navbar-light bg-light" style="position: sticky;top: 0;z-index: 1000;height: 50px">
     <div class="container">
         <button class="navbar-toggler" id="shownav" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent"
