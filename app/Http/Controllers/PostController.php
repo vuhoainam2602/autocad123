@@ -62,14 +62,13 @@ class PostController extends Controller
 //        DB::table('wp_posts')->where('post_name', '=', $post_name)->increment('post_view');
 //        try {
 //            dd($request->getRequestUri());
-
             $post_detail = DB::table('wp_posts')
                 ->select('wp_posts.post_author', 'wp_posts.ID', 'wp_posts.post_date', 'wp_posts.post_content', 'wp_posts.post_title',
                     'wp_yoast_indexable.twitter_image', 'wp_yoast_indexable.permalink', 'wp_yoast_indexable.title', 'wp_yoast_indexable.description', 'wp_yoast_indexable.breadcrumb_title'
                     , 'wp_yoast_indexable.primary_focus_keyword', 'wp_yoast_indexable.meta_robot', 'wp_posts.id_key')
                 ->join('wp_yoast_indexable', 'wp_yoast_indexable.object_id', '=', 'wp_posts.id')
                 ->where('post_name', '=', $post_name)
-                ->orderBy('id','desc')
+                ->orderBy('id','asc')
                 ->get()->toArray();
             $category = DB::table('wp_terms')->where('slug', '=', $post_name)->first();
 //            if (!empty($category)) {
@@ -82,14 +81,11 @@ class PostController extends Controller
 
 
             $post_detail[0]->post_content = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $post_detail[0]->post_content);
-
-
             $wp_term_relationships = cache()->remember('PostController-post_detail_id_' . $post_detail[0]->ID . $post_name, 120, function () use ($post_detail) {
                 return DB::table('wp_term_relationships')
                     ->select('term_taxonomy_id')
                     ->where('object_id', '=', $post_detail[0]->ID)->get()->toArray();
             });
-
             if (!empty($wp_term_relationships)) {
 
 
